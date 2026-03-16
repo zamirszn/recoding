@@ -63,15 +63,6 @@ func isPunctuation(s string) bool {
 	return s == "," || s == "!"
 }
 
-func isPunctuation(s string) bool {
-	for _, r := range s {
-		if r == ',' || r == '!' {
-			return true
-		}
-	}
-	return false
-}
-
 // 7
 func aOrAn(nextWord string) string {
 	if nextWord == "honest" {
