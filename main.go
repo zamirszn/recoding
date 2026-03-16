@@ -11,7 +11,6 @@ func main() {
 	fmt.Println(binToDecimal("10"))
 	fmt.Println(capitalize("hELLo"))
 	fmt.Println(capitalizeTheNth([]string{"go", "is", "really", "fun"}, 3))
-	fmt.Println(fixPunctuation("Fix the punctuations , in this code ! , notice the space between the punctuations"))
 	fmt.Println(joinWithPunctuation([]string{"hello", ",", "world", "!"}))
 	fmt.Println(isPunctuation("!"))
 	fmt.Println(isPunctuation("x"))
