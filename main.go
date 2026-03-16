@@ -59,10 +59,8 @@ func joinWithPunctuation(tokens []string) string {
 }
 
 // 6
-func fixPunctuation(word string) string {
-	word = strings.ReplaceAll(word, " ,", ",")
-	word = strings.ReplaceAll(word, " !", "!")
-	return strings.TrimSpace(word)
+func isPunctuation(s string) bool {
+	return s == "," || s == "!"
 }
 
 func isPunctuation(s string) bool {
