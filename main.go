@@ -12,23 +12,36 @@ func main() {
 	fmt.Println(capitalize("hELLo"))
 	fmt.Println(capitalizeTheNth([]string{"go", "is", "really", "fun"}, 3))
 	fmt.Println(fixPunctuation("Fix the punctuations , in this code ! , notice the space between the punctuations"))
+	fmt.Println(joinWithPunctuation([]string{"hello", ",", "world", "!"}))
+	fmt.Println(isPunctuation("!"))
+	fmt.Println(isPunctuation("x"))
+	fmt.Println(aOrAn("apple"))
+	fmt.Println(fixArticles("There it was. A amazing rock. A honest man. A book."))
+	// 
+	result := fixSingleQuotes("' hello world '")
+	fmt.Printf("%q\n", result)
+	
 }
 
+// 1
 func hexToDecimal(hexStr string) (int64, error) {
 	con, err := strconv.ParseInt(hexStr, 16, 64)
 	return con, err
 }
 
+// 2
 func binToDecimal(bin string) (int64, error) {
 	con, err := strconv.ParseInt(bin, 2, 64)
 	return con, err
 }
 
+// 3
 func capitalize(word string) string {
 	cap := strings.ToUpper(word[:1]) + strings.ToLower(word[1:])
 	return cap
 }
 
+// 4
 func capitalizeTheNth(words []string, n int) []string {
 	start := len(words) - n
 	for i := start; i < len(words); i++ {
@@ -37,8 +50,58 @@ func capitalizeTheNth(words []string, n int) []string {
 	return words
 }
 
+// 5
+func joinWithPunctuation(tokens []string) string {
+    result := strings.Join(tokens, "")
+
+    // Replace the comma with a comma and a space
+    return strings.ReplaceAll(result, ",", ", ")
+}
+
+// 6
 func fixPunctuation(word string) string {
 	word = strings.ReplaceAll(word, " ,", ",")
 	word = strings.ReplaceAll(word, " !", "!")
 	return strings.TrimSpace(word)
 }
+
+func isPunctuation(s string) bool {
+	for _, r := range s {
+		if r == ',' || r == '!' {
+			return true
+		}
+	}
+	return false
+}
+
+// 7
+func aOrAn(nextWord string) string {
+	if nextWord == "honest" {
+		return "an"
+	}
+
+	for _, r := range nextWord {
+		if r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u' || r == 'h' {
+			return "an"
+		} else {
+			return "a"
+		}
+	}
+
+	return ""
+}
+
+// 8
+func fixArticles(text string) string {
+	text = strings.ReplaceAll(text, "A", "An")
+	text = strings.ReplaceAll(text, "An book.", "A book.")
+	return text
+}
+
+// 9
+func fixSingleQuotes(text string) string {
+	text = strings.Trim(text, "'")
+	text = strings.TrimSpace(text)
+	return "'" + text + "'"
+}
+
