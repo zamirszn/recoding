@@ -65,26 +65,40 @@ func isPunctuation(s string) bool {
 
 // 7
 func aOrAn(nextWord string) string {
-	if nextWord == "honest" {
+	if nextWord == "" {
+		return "a"
+	}
+
+	first := strings.ToLower(string(nextWord[0]))
+
+	switch first {
+	case "a", "e", "i", "o", "u", "h":
 		return "an"
+	default:
+		return "a"
 	}
-
-	for _, r := range nextWord {
-		if r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u' || r == 'h' {
-			return "an"
-		} else {
-			return "a"
-		}
-	}
-
-	return ""
 }
 
 // 8
 func fixArticles(text string) string {
-	text = strings.ReplaceAll(text, "A", "An")
-	text = strings.ReplaceAll(text, "An book.", "A book.")
-	return text
+	words := strings.Fields(text)
+
+	for i := 0; i < len(words)-1; i++ {
+		if words[i] == "A" || words[i] == "a" {
+
+			next := strings.Trim(words[i+1], ".,!?")
+
+			article := aOrAn(next)
+
+			if words[i] == "A" {
+				words[i] = strings.ToUpper(article[:1]) + article[1:]
+			} else {
+				words[i] = article
+			}
+		}
+	}
+
+	return strings.Join(words, " ")
 }
 
 // 9
