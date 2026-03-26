@@ -39,19 +39,9 @@ func capitalize(s string) string {
 }
 
 func delete(s string, index int) {
-	lenofword := len(s)
-
-	if index > lenofword || index < 1 {
-		fmt.Printf("Your index in out of range %v, range should be within 1 and %v \n", index, lenofword)
-		// restart code
-		main()
+	if index < 0 || index >= len(s) {
+		fmt.Printf("Index %d out of range (0-%d)\n", index, len(s)-1)
+		return
 	}
-	empty := []rune{}
-	for i, char := range s {
-		if i != index {
-			empty = append(empty, char)
-		}
-	}
-
-	fmt.Println(string(empty))
+	fmt.Println(s[:index] + s[index+1:])
 }
