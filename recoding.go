@@ -20,16 +20,71 @@ func main() {
 
 	words := ApplyCaseTags(converNums)
 	fixedArt := FixArticles(words)
-	
+	removedtags := RemoveTags(fixedArt)
+	joined := JoinWithPunctuation(removedtags)
+	fixedq := FixSingleQuotes(joined)
+	os.WriteFile("output.txt", []byte(fixedq), 0644)
 
+}
+
+func FixSingleQuotes(text string) string {
+	parts := strings.Split(text, "'")
+
+	for index, part := range parts {
+		isInsideQuotes := index%2 == 1
+		if isInsideQuotes {
+			parts[index] = strings.TrimSpace(part)
+		}
+
+	}
+
+	return strings.Join(parts, "'")
+
+}
+
+func JoinWithPunctuation(words []string) string {
+	result := ""
+	for index, word := range words {
+		if index == 0 || IsPunctuation(word) {
+			result += word
+		} else {
+			result += " " + word
+		}
+	}
+
+	return result
+}
+
+func IsPunctuation(s string) bool {
+	return strings.ContainsAny(s, ",.!?;:")
+}
+
+func RemoveTags(words []string) []string {
+	kept := words[:0]
+
+	skipNext := false
+
+	for _, word := range words {
+		if skipNext {
+			skipNext = false
+			continue
+		}
+
+		isCompoundTag := word == "(low," || word == "(up," || word == "(cap,"
+		isTag := isCompoundTag || strings.HasPrefix(word, "(") && strings.HasSuffix(word, ")")
+		skipNext = isCompoundTag
+		if !isTag {
+			kept = append(kept, word)
+		}
+	}
+	return kept
 }
 
 func FixArticles(words []string) []string {
 
-
-	for i:= 0; i < len(words); i++{
+	for i := 0; i < len(words); i++ {
 		lower := strings.ToLower(words[i])
-		if lower != "a"{
+		if lower != "a" {
 			continue
 		}
 
@@ -37,13 +92,17 @@ func FixArticles(words []string) []string {
 
 		correct := AorAn(nextword)
 
-		if words[i] == "A"{
-			words[i]= capitalize(correct)
-		}else{
-			words[i]= correct
+		if words[i] == "A" {
+			words[i] = Capitalize(correct)
+		} else {
+			words[i] = correct
 		}
 	}
-return words
+	return words
+}
+
+func Capitalize(word string) string {
+	return strings.ToUpper(word[:1]) + strings.ToLower(word[1:])
 }
 
 func AorAn(nextWord string) string {
